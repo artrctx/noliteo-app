@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { useFontForDevelopment } from "../hooks/use-font-for-development";
 import { QueryProvider } from "../providers/query-provider";
+import { SessionProvider } from "../providers/session-provider";
 import { ThemeProvider } from "../providers/theme-provider";
 import "./global.css";
 
@@ -26,10 +27,12 @@ export default function RootLayout() {
     <ThemeProvider>
       <StatusBar style="auto" />
       <QueryProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="protected/index" />
-        </Stack>
+        <SessionProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" />
+            <Stack.Screen name="protected/index" />
+          </Stack>
+        </SessionProvider>
       </QueryProvider>
     </ThemeProvider>
   );

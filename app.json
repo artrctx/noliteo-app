@@ -14,9 +14,7 @@
         "usesNonExemptEncryption": false
       }
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -61,7 +59,8 @@
       [
         "expo-secure-store",
         {
-          "configureAndroidBackup": true
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ],
       [
