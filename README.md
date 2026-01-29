@@ -1,4 +1,4 @@
-# Noliteo App Repo
+# Noliteo
 
 ```
  _____

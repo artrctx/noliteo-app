@@ -14,7 +14,9 @@
         "usesNonExemptEncryption": false
       }
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -38,10 +40,10 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "1702013b-ed5e-49e8-9a2e-cce58d10baa3"
+        "projectId": "c10e7252-93b5-484b-94de-8699e0c2d6c5"
       }
     },
-    "owner": "arthun.ctx",
+    "owner": "artrctx",
     "plugins": [
       "expo-router",
       [
@@ -59,36 +61,26 @@
       [
         "expo-secure-store",
         {
-          "configureAndroidBackup": true,
+          "configureAndroidBackup": true
         }
       ],
       [
         "expo-font",
         {
           "fonts": [
-            // TODO: remove unused fonts
-            // -- Geist Mono --
-            // weight: 100
             "./assets/fonts/GeistMono-Thin.otf",
             "./assets/fonts/GeistMono-ThinItalic.otf",
-            // weight: 200
             "./assets/fonts/GeistMono-ExtraLight.otf",
             "./assets/fonts/GeistMono-ExtraLightItalic.otf",
-            // weight: 300
             "./assets/fonts/GeistMono-Light.otf",
             "./assets/fonts/GeistMono-LightItalic.otf",
-            // weight: 400
             "./assets/fonts/GeistMono-Regular.otf",
-            // weight: 500
             "./assets/fonts/GeistMono-Medium.otf",
             "./assets/fonts/GeistMono-MediumItalic.otf",
-            // weight: 600
             "./assets/fonts/GeistMono-SemiBold.otf",
             "./assets/fonts/GeistMono-SemiBoldItalic.otf",
-            // weight: 700
             "./assets/fonts/GeistMono-Bold.otf",
             "./assets/fonts/GeistMono-BoldItalic.otf",
-            // weight: 800
             "./assets/fonts/GeistMono-ExtraBold.otf",
             "./assets/fonts/GeistMono-ExtraBoldItalic.otf"
           ]
