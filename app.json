@@ -1,0 +1,99 @@
+{
+  "expo": {
+    "name": "noliteo",
+    "slug": "noliteo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "noliteo",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "server",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1702013b-ed5e-49e8-9a2e-cce58d10baa3"
+      }
+    },
+    "owner": "arthun.ctx",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            // TODO: remove unused fonts
+            // -- Geist Mono --
+            // weight: 100
+            "./assets/fonts/GeistMono-Thin.otf",
+            "./assets/fonts/GeistMono-ThinItalic.otf",
+            // weight: 200
+            "./assets/fonts/GeistMono-ExtraLight.otf",
+            "./assets/fonts/GeistMono-ExtraLightItalic.otf",
+            // weight: 300
+            "./assets/fonts/GeistMono-Light.otf",
+            "./assets/fonts/GeistMono-LightItalic.otf",
+            // weight: 400
+            "./assets/fonts/GeistMono-Regular.otf",
+            // weight: 500
+            "./assets/fonts/GeistMono-Medium.otf",
+            "./assets/fonts/GeistMono-MediumItalic.otf",
+            // weight: 600
+            "./assets/fonts/GeistMono-SemiBold.otf",
+            "./assets/fonts/GeistMono-SemiBoldItalic.otf",
+            // weight: 700
+            "./assets/fonts/GeistMono-Bold.otf",
+            "./assets/fonts/GeistMono-BoldItalic.otf",
+            // weight: 800
+            "./assets/fonts/GeistMono-ExtraBold.otf",
+            "./assets/fonts/GeistMono-ExtraBoldItalic.otf"
+          ]
+        }
+      ]
+    ]
+  }
+}

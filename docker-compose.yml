@@ -1,0 +1,14 @@
+name: "noliteo-db"
+
+services:
+  postgres:
+    image: postgres:17.5-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/posgres:/var/lib/posgresql/data
+      - ./db/initdb:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
