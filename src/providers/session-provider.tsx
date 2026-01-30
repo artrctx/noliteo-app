@@ -1,43 +1,65 @@
 import * as SecureStore from "expo-secure-store";
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { T } from "../components/base/text";
 import { ScreenView } from "../components/screen-view";
 
 export type SessionCtx = {
   token: string | null;
-  setToken: (_: string) => void;
+  resetToken: () => Promise<void>;
 };
 
-const tokenKey = "CoreToken";
+const TOKEN_KEY = "CoreToken";
 
 const SessionContext = createContext<SessionCtx | null>(null);
 
-type SessionProviderState = {
-  initialized: boolean;
-  requiresToken: boolean;
-};
+function SessionRegisterInput({}: {}) {
+  return (
+    <Animated.View entering={FadeIn} exiting={FadeOut}>
+      <T>Ste</T>
+    </Animated.View>
+  );
+}
+
+function SessionRegisterLoader() {
+  return (
+    <Animated.View entering={FadeIn} exiting={FadeOut}>
+      <ActivityIndicator />
+    </Animated.View>
+  );
+}
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [token, setToken] = useState<string | null>(SecureStore.getItem(tokenKey));
+  const [token, setToken] = useState<string | null>(null);
 
   const value = useMemo(
     () => ({
       token,
-      setToken: (t: string) => {
-        // validate with server first
+      resetToken: async () => {
+        await SecureStore.deleteItemAsync(TOKEN_KEY);
+        setToken(null);
       },
     }),
-    []
+    [token]
   );
 
+  useEffect(() => {
+    if (initialized) return;
+    const token = SecureStore.getItem(TOKEN_KEY);
+    // validate token
+    setToken(token);
+    setInitialized(true);
+  }, []);
+
   return (
-    <SessionContext.Provider value={null}>
-      {initialized ? (
+    <SessionContext.Provider value={value}>
+      {token ? (
         children
       ) : (
         <ScreenView className="items-center justify-center p-4">
-          <ActivityIndicator />
+          {initialized ? <SessionRegisterInput /> : <SessionRegisterLoader />}
         </ScreenView>
       )}
     </SessionContext.Provider>
