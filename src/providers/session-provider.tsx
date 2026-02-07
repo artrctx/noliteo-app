@@ -38,13 +38,13 @@ function SessionRegisterInput({
   return (
     <>
       <TextInput
-        placeholder="Token?"
+        placeholder="Token Please..."
         onChangeText={(txt: string) => {
           if (pending) return;
           setToken(txt);
         }}
       />
-      <Pressable onPress={onSubmit}>{pending ? "Registering..." : "Register"}</Pressable>
+      <Pressable onPress={onSubmit}>{pending ? "Starting Session..." : "Register"}</Pressable>
     </>
   );
 }
@@ -82,8 +82,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (initialized) return;
-    // validate saved session
     const token = SecureStore.getItem(TOKEN_KEY);
+
+    if (token) {
+    }
+
     // validate token
     setToken(token);
     setSessionState((prev) => ({ ...prev, initialized: true }));
