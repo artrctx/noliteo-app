@@ -12,9 +12,11 @@ import {
 import { ActivityIndicator, Pressable } from "react-native";
 import { TextInput } from "../components/base/text-input";
 import { ScreenView } from "../components/screen-view";
+import { noliteo } from "../services/noliteo/noliteo";
 
 export type SessionCtx = {
   token: string | null;
+  ident: string | null;
   resetToken: () => Promise<void>;
 };
 
@@ -23,16 +25,22 @@ const TOKEN_KEY = "CoreToken";
 const SessionContext = createContext<SessionCtx | null>(null);
 
 function SessionRegisterInput({
-  requestRegister,
+  generateToken,
 }: {
-  requestRegister: (_tkn: string) => Promise<void>;
+  generateToken: (_tkn: string) => Promise<Error | null>;
 }) {
   const [pending, startTransition] = useTransition();
   const [token, setToken] = useState<string>();
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = () => {
     if (pending || !token) return;
-    startTransition(async () => requestRegister(token));
+    if (error) setError(null);
+    startTransition(async () => {
+      const genResult = await generateToken(token);
+      if (genResult === null) return;
+      setError(genResult.message);
+    });
   };
 
   return (
@@ -41,6 +49,7 @@ function SessionRegisterInput({
         placeholder="Token Please..."
         onChangeText={(txt: string) => {
           if (pending) return;
+          if (error) setError(null);
           setToken(txt);
         }}
       />
@@ -54,52 +63,64 @@ function SessionRegisterLoader() {
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [{ initialized, error }, setSessionState] = useState<{
-    initialized: boolean;
-    error: string | null;
-  }>({ initialized: false, error: null });
-  const [token, setToken] = useState<string | null>(null);
+  const [initialized, setInitalized] = useState<boolean>(false);
+  const [tokenInfo, setTokenInfo] = useState<{ token: string; ident: string } | null>(null);
 
-  const requestRegister = useCallback(async (token: string) => {
-    if (!initialized) return;
-    // validate token
-    // if validation fails should through toast
-    SecureStore.setItem(TOKEN_KEY, token);
-    setToken(token);
-  }, []);
+  const generateToken = useCallback(
+    async (tkn: string): Promise<Error | null> => {
+      if (!initialized) return null;
+      const genToken = await noliteo.token.generate(tkn);
+      if (genToken.error) return genToken.error;
+      // if validation fails should through toast
+      SecureStore.setItem(TOKEN_KEY, genToken.data.jwt);
+      setTokenInfo({ token: genToken.data.jwt, ident: genToken.data.ident });
+      return null;
+    },
+    [initialized]
+  );
 
   const value = useMemo(
     () => ({
-      token,
+      token: tokenInfo?.token ?? null,
+      ident: tokenInfo?.ident ?? null,
       resetToken: async () => {
         if (!initialized) return;
         await SecureStore.deleteItemAsync(TOKEN_KEY);
-        setToken(null);
+        setTokenInfo(null);
       },
     }),
-    [token, initialized]
+    [tokenInfo?.ident, tokenInfo?.token, initialized]
   );
 
   useEffect(() => {
     if (initialized) return;
     const token = SecureStore.getItem(TOKEN_KEY);
-
-    if (token) {
+    if (!token) {
+      setInitalized(true);
+      return;
     }
-
-    // validate token
-    setToken(token);
-    setSessionState((prev) => ({ ...prev, initialized: true }));
+    (async () => {
+      const validationResult = await noliteo.token.validate(token);
+      if (validationResult.error) {
+        await SecureStore.deleteItemAsync(TOKEN_KEY);
+        // maybe show it in toast?
+        console.error(validationResult.error);
+        setInitalized(true);
+        return;
+      }
+      setTokenInfo({ token, ident: validationResult.data.ident });
+      setInitalized(true);
+    })();
   }, []);
 
   return (
     <SessionContext.Provider value={value}>
-      {token ? (
+      {tokenInfo ? (
         children
       ) : (
         <ScreenView className="items-center justify-center p-4">
           {initialized ? (
-            <SessionRegisterInput requestRegister={requestRegister} />
+            <SessionRegisterInput generateToken={generateToken} />
           ) : (
             <SessionRegisterLoader />
           )}

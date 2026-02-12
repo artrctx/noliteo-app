@@ -35,11 +35,11 @@ class Noliteo {
       validatedTokenSchema
     );
   }
-  private async generateToken(tknKey: string): NoliteoResult<Token> {
+  private async generateToken(tkn: string): NoliteoResult<Token> {
     return this.parseResponse(
       fetch(`${this.baseUrl}/token`, {
         method: "POST",
-        body: JSON.stringify({ token: tknKey }),
+        body: JSON.stringify({ token: tkn }),
       }),
       tokenSchema
     );
