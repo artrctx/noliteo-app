@@ -7,9 +7,9 @@ import {
   useEffect,
   useMemo,
   useState,
-  useTransition,
 } from "react";
-import { ActivityIndicator, Pressable } from "react-native";
+import { ActivityIndicator, Pressable, View } from "react-native";
+import { T } from "../components/base/text";
 import { TextInput } from "../components/base/text-input";
 import { ScreenView } from "../components/screen-view";
 import { noliteo } from "../services/noliteo/noliteo";
@@ -20,7 +20,7 @@ export type SessionCtx = {
   resetToken: () => Promise<void>;
 };
 
-const TOKEN_KEY = "CoreToken";
+const TOKEN_KEY = "NoliteoToken";
 
 const SessionContext = createContext<SessionCtx | null>(null);
 
@@ -29,23 +29,30 @@ function SessionRegisterInput({
 }: {
   generateToken: (_tkn: string) => Promise<Error | null>;
 }) {
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState<boolean>(false);
   const [token, setToken] = useState<string>();
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (pending || !token) return;
     if (error) setError(null);
-    startTransition(async () => {
+    setPending(true);
+    try {
       const genResult = await generateToken(token);
       if (genResult === null) return;
       setError(genResult.message);
-    });
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
-    <>
+    <View className="items-center gap-y-2">
+      {error && (
+        <T className="text-red-600 dark:text-red-500 text-center text-sm font-semibold">{error}</T>
+      )}
       <TextInput
+        className="w-40 border-b"
         placeholder="Token Please..."
         onChangeText={(txt: string) => {
           if (pending) return;
@@ -53,8 +60,12 @@ function SessionRegisterInput({
           setToken(txt);
         }}
       />
-      <Pressable onPress={onSubmit}>{pending ? "Starting Session..." : "Register"}</Pressable>
-    </>
+      {token && token.length > 0 && (
+        <Pressable onPress={onSubmit} className="rounded-sm border px-4 py-2">
+          <T>{pending ? "Starting Session..." : "Register"}</T>
+        </Pressable>
+      )}
+    </View>
   );
 }
 

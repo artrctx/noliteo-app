@@ -8,7 +8,7 @@ type NoliteoResult<T> = Promise<{ data: T; error?: never } | { data?: never; err
 class Noliteo {
   private baseUrl: string;
   constructor() {
-    this.baseUrl = process.env.SERVER_API_URL;
+    this.baseUrl = process.env.EXPO_PUBLIC_SERVER_API_URL;
     if (!this.baseUrl) throw new Error("'SERVER_API_URL' env is missing");
   }
 

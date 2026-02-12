@@ -4,17 +4,17 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   darkMode: "class",
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
-  content: ["./src/app/**/*.{js,jsx,ts,tsx}", "./src/components/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/app/**/*.{js,jsx,ts,tsx}",
+    "./src/providers/**/*.{js,jsx,ts,tsx}",
+    "./src/components/**/*.{js,jsx,ts,tsx}",
+  ],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
       colors: {
         primary: "var(--color-primary)",
         background: "var(--color-background)",
-        red: "var(--color-red)",
-        blue: "var(--color-blue)",
-        yellow: "var(--color-yellow)",
-        green: "var(--color-green)",
       },
     },
   },
