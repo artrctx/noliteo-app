@@ -49,7 +49,7 @@ function SessionRegisterInput({
   return (
     <View className="items-center gap-y-2">
       {error && (
-        <T className="text-red-600 dark:text-red-500 text-center text-sm font-semibold">{error}</T>
+        <T className="text-center text-sm font-semibold text-red-600 dark:text-red-500">{error}</T>
       )}
       <TextInput
         className="w-40 border-b"
@@ -67,10 +67,6 @@ function SessionRegisterInput({
       )}
     </View>
   );
-}
-
-function SessionRegisterLoader() {
-  return <ActivityIndicator />;
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
@@ -133,7 +129,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           {initialized ? (
             <SessionRegisterInput generateToken={generateToken} />
           ) : (
-            <SessionRegisterLoader />
+            <ActivityIndicator />
           )}
         </ScreenView>
       )}

@@ -30,9 +30,9 @@ export default function RootLayout() {
       <StatusBar style="auto" />
       <QueryProvider>
         <SessionProvider>
-          <Stack screenOptions={{ headerShown: false }}>
+          <Stack initialRouteName="index" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-            <Stack.Screen name="protected/index" />
+            {/* <Stack.Screen name="protected/index" /> */}
           </Stack>
         </SessionProvider>
       </QueryProvider>

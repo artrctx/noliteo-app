@@ -53,6 +53,7 @@ class Noliteo {
   ): NoliteoResult<z.infer<Z>> {
     const res = await tryCatch(resPromise);
     if (res.error) return { error: res.error };
+    if (!res.data.ok) return { error: new Error((await res.data.text())?.trim()) };
     const jsonParsed = await tryCatch(res.data.json());
     if (jsonParsed.error) return { error: jsonParsed.error };
     const parsed = schema.safeParse(jsonParsed.data);
