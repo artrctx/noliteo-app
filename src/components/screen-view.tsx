@@ -7,7 +7,7 @@ import { cn } from "../styles/utils";
 export function ScreenView({ className, ...props }: SafeAreaViewProps) {
   const { theme } = useTheme();
   return (
-    <View style={themes[theme]} className="flex-1 bg-background">
+    <View style={themes[theme]} className="flex-1 bg-background color-primary">
       <SafeAreaView className={cn("flex-1", className)} {...props} />
     </View>
   );

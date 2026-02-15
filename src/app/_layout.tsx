@@ -32,7 +32,6 @@ export default function RootLayout() {
         <SessionProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
-            {/* <Stack.Screen name="protected/index" /> */}
           </Stack>
         </SessionProvider>
       </QueryProvider>

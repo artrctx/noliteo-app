@@ -4,7 +4,6 @@ import { Collapsible } from "@/src/components/base/collapsible";
 import { IconSymbol } from "@/src/components/base/icon-symbol";
 import ParallaxScrollView from "@/src/components/parallax-scroll-view";
 import { ScreenView } from "@/src/components/screen-view";
-import { Fonts } from "@/src/constants/theme";
 import { Text } from "react-native";
 
 export default function TabTwoScreen() {
@@ -21,13 +20,7 @@ export default function TabTwoScreen() {
       }
     >
       <ScreenView style={styles.titleContainer}>
-        <Text
-          style={{
-            fontFamily: Fonts.rounded,
-          }}
-        >
-          Explore
-        </Text>
+        <Text>Explore</Text>
       </ScreenView>
       <Text>This app includes example code to help you get started.</Text>
       <Collapsible title="File-based routing"></Collapsible>

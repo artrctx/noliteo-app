@@ -7,8 +7,6 @@ import Animated, {
   useScrollOffset,
 } from "react-native-reanimated";
 
-import { useColorScheme } from "@/src/hooks/use-color-scheme";
-import { useThemeColor } from "@/src/hooks/use-theme-color";
 import { ScreenView } from "./screen-view";
 
 const HEADER_HEIGHT = 250;
@@ -23,8 +21,6 @@ export default function ParallaxScrollView({
   headerImage,
   headerBackgroundColor,
 }: Props) {
-  const backgroundColor = useThemeColor({}, "background");
-  const colorScheme = useColorScheme() ?? "light";
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollOffset(scrollRef);
   const headerAnimatedStyle = useAnimatedStyle(() => {
@@ -45,20 +41,8 @@ export default function ParallaxScrollView({
   });
 
   return (
-    <Animated.ScrollView
-      ref={scrollRef}
-      style={{ backgroundColor, flex: 1 }}
-      scrollEventThrottle={16}
-    >
-      <Animated.View
-        style={[
-          styles.header,
-          { backgroundColor: headerBackgroundColor[colorScheme] },
-          headerAnimatedStyle,
-        ]}
-      >
-        {headerImage}
-      </Animated.View>
+    <Animated.ScrollView ref={scrollRef} style={{ flex: 1 }} scrollEventThrottle={16}>
+      <Animated.View style={[styles.header, headerAnimatedStyle]}>{headerImage}</Animated.View>
       <ScreenView style={styles.content}>{children}</ScreenView>
     </Animated.ScrollView>
   );
