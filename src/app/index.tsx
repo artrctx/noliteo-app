@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <ScreenView className="p-2">
       <View className="flex-1 rounded-md border border-primary">
-        <View className="flex-row justify-end border-b p-2">
+        <View className="flex-row justify-end border-b border-primary p-2">
           <ThemeToggle />
         </View>
         <FlatList
