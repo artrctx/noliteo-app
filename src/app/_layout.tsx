@@ -7,7 +7,7 @@ import Toast from "react-native-toast-message";
 import { useFontForDevelopment } from "../hooks/use-font-for-development";
 import { QueryProvider } from "../providers/query-provider";
 import { SessionProvider } from "../providers/session-provider";
-import { ThemeProvider } from "../providers/theme-provider";
+import { ThemeProvider, useTheme } from "../providers/theme-provider";
 import "./global.css";
 
 export const unstable_settings = {
@@ -16,6 +16,11 @@ export const unstable_settings = {
 };
 
 SplashScreen.preventAutoHideAsync();
+
+const ThemedStatusBar = () => {
+  const { theme } = useTheme();
+  return <StatusBar style={theme === "dark" ? "light" : "dark"} />;
+};
 
 export default function RootLayout() {
   //! for development only remove when build
@@ -27,12 +32,10 @@ export default function RootLayout() {
   if (!loaded) return null;
   return (
     <ThemeProvider>
-      <StatusBar style="auto" />
+      <ThemedStatusBar />
       <QueryProvider>
         <SessionProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-          </Stack>
+          <Stack screenOptions={{ headerShown: false }} />
         </SessionProvider>
       </QueryProvider>
       <Toast avoidKeyboard />

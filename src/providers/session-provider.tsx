@@ -1,22 +1,14 @@
 import * as SecureStore from "expo-secure-store";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, View } from "react-native";
 import { T } from "../components/base/text";
 import { TextInput } from "../components/base/text-input";
 import { ScreenView } from "../components/screen-view";
-import { noliteo } from "../services/noliteo/noliteo";
+import { tokenService } from "../services/token/token";
 
 export type SessionCtx = {
-  token: string | null;
-  ident: string | null;
+  token: string;
+  ident: string;
   resetToken: () => Promise<void>;
 };
 
@@ -76,7 +68,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const generateToken = useCallback(
     async (tkn: string): Promise<Error | null> => {
       if (!initialized) return null;
-      const genToken = await noliteo.token.generate(tkn);
+      const genToken = await tokenService.generate(tkn);
       if (genToken.error) return genToken.error;
       // if validation fails should through toast
       SecureStore.setItem(TOKEN_KEY, genToken.data.jwt);
@@ -86,18 +78,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [initialized]
   );
 
-  const value = useMemo(
-    () => ({
-      token: tokenInfo?.token ?? null,
-      ident: tokenInfo?.ident ?? null,
-      resetToken: async () => {
-        if (!initialized) return;
-        await SecureStore.deleteItemAsync(TOKEN_KEY);
-        setTokenInfo(null);
-      },
-    }),
-    [tokenInfo?.ident, tokenInfo?.token, initialized]
-  );
+  const resetToken = useCallback(async () => {
+    await SecureStore.deleteItemAsync(TOKEN_KEY);
+    setTokenInfo(null);
+  }, []);
 
   useEffect(() => {
     if (initialized) return;
@@ -107,7 +91,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       return;
     }
     (async () => {
-      const validationResult = await noliteo.token.validate(token);
+      const validationResult = await tokenService.validate(token);
       if (validationResult.error) {
         await SecureStore.deleteItemAsync(TOKEN_KEY);
         // maybe show it in toast?
@@ -121,9 +105,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <SessionContext.Provider value={value}>
+    <>
       {tokenInfo ? (
-        children
+        <SessionContext.Provider value={{ ...tokenInfo, resetToken }}>
+          {children}
+        </SessionContext.Provider>
       ) : (
         <ScreenView className="items-center justify-center p-4">
           {initialized ? (
@@ -133,7 +119,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           )}
         </ScreenView>
       )}
-    </SessionContext.Provider>
+    </>
   );
 }
 

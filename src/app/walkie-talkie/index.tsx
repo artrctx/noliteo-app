@@ -11,7 +11,7 @@ export default function WalkieTalkie() {
         <View className="flex-row justify-end border-b border-primary p-2">
           <BlinkIndicator />
         </View>
-        <View className="flex-1 gap-y-4 p-2">
+        <View className="flex-1 gap-y-4 p-4">
           <View className="flex-1 border border-primary">
             <T>things here</T>
           </View>
