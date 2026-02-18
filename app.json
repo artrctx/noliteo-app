@@ -84,7 +84,8 @@
             "./assets/fonts/GeistMono-ExtraBoldItalic.otf"
           ]
         }
-      ]
+      ],
+      "@config-plugins/react-native-webrtc"
     ]
   }
 }
