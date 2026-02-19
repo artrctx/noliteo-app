@@ -1,4 +1,3 @@
-import { RTCPeerConnection } from "react-native-webrtc";
 import { Noliteo } from "../noliteo/noliteo";
 
 type WalkieTalkieArgs = {
@@ -7,14 +6,14 @@ type WalkieTalkieArgs = {
 
 export class WalkieTalkie extends Noliteo {
   private ws: WebSocket;
-  private pc: RTCPeerConnection = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
-      },
-    ],
-    iceCandidatePoolSize: 10,
-  });
+  // private pc: RTCPeerConnection = new RTCPeerConnection({
+  //   iceServers: [
+  //     {
+  //       urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+  //     },
+  //   ],
+  //   iceCandidatePoolSize: 10,
+  // });
 
   constructor({ token }: WalkieTalkieArgs) {
     super();
