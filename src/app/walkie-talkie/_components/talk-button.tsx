@@ -5,11 +5,12 @@ import { Pressable } from "react-native";
 
 export function TalkButton() {
   const { theme } = useTheme();
-  const { status } = useWalkieTalkie();
+  const { status, test } = useWalkieTalkie();
   const disabled = status !== "OPERATIONAL";
   return (
     <Pressable
       disabled={disabled}
+      onPress={test}
       className="items-center justify-center border border-primary p-5"
     >
       <MaterialCommunityIcons
