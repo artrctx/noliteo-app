@@ -6,6 +6,7 @@ type WalkieTalkieContext = {
   status: "CONNECTING" | "OPERATIONAL" | "CLOSED" | "ERRORED";
   msg?: string;
   wt?: WalkieTalkie;
+  test: () => void;
 };
 
 const WTCtx = createContext<WalkieTalkieContext | null>(null);
@@ -19,7 +20,7 @@ export function WalkieTalkieProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (wt || status !== "CONNECTING") return;
     void (async () => {
-      const wt = new WalkieTalkie({ token: token + "2" });
+      const wt = new WalkieTalkie({ token: token });
       wt.registerOnOpen(() => {
         setWalkieTalkie(wt);
         setStatus("OPERATIONAL");
@@ -32,7 +33,18 @@ export function WalkieTalkieProvider({ children }: { children: ReactNode }) {
     })();
   }, []);
 
-  const value = useMemo(() => ({ status, msg, wt }), [wt]);
+  const value = useMemo(
+    () => ({
+      status,
+      msg,
+      wt,
+      test: () => {
+        if (!wt) return;
+        wt.ws.send(JSON.stringify({ type: "SOMETHING HERE" }));
+      },
+    }),
+    [wt]
+  );
   return <WTCtx.Provider value={value}>{children}</WTCtx.Provider>;
 }
 
